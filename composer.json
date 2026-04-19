@@ -1,0 +1,22 @@
+{
+    "name": "magneto/module-customer-sales-stats",
+    "description": "Adds a Customer Lifetime Revenue column to the Magento Admin Sales Order Grid with queue-based aggregation.",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.2",
+        "magento/framework": "*",
+        "magento/module-sales": "*",
+        "magento/module-customer": "*",
+        "magento/module-directory": "*",
+        "magento/module-ui": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Magneto\\CustomerSalesStats\\": ""
+        }
+    }
+}

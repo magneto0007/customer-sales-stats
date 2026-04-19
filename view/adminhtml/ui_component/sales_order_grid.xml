@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+
+    <columns name="sales_order_columns">
+
+        <column name="lifetime_revenue"
+                class="Magneto\CustomerSalesStats\Ui\Component\Listing\Column\LifetimeRevenue"
+                sortOrder="200">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Customer Lifetime Revenue</label>
+                <sortable>true</sortable>
+                <visible>true</visible>
+            </settings>
+        </column>
+
+    </columns>
+</listing>

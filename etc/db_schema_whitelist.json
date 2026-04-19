@@ -1,0 +1,34 @@
+{
+    "clr_order_complete_queue": {
+        "column": {
+            "queue_id": true,
+            "order_id": true,
+            "customer_email": true,
+            "base_grand_total": true,
+            "base_to_global_rate": true,
+            "created_at": true,
+            "retry_count": true
+        },
+        "index": {
+            "CLR_ORDER_COMPLETE_QUEUE_CUSTOMER_EMAIL": true,
+            "CLR_ORDER_COMPLETE_QUEUE_RETRY_COUNT_QUEUE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "CLR_ORDER_COMPLETE_QUEUE_ORDER_ID": true,
+            "CLR_ORDER_COMPLETE_QUEUE_ORDER_ID_SALES_ORDER_ENTITY_ID": true
+        }
+    },
+    "clr_customer_lifetime_revenue": {
+        "column": {
+            "clr_id": true,
+            "customer_email": true,
+            "lifetime_revenue": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "CLR_CUSTOMER_LIFETIME_REVENUE_CUSTOMER_EMAIL": true
+        }
+    }
+}

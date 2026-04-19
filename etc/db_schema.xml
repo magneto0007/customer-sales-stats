@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="clr_order_complete_queue" resource="sales" engine="innodb"
+           comment="Queue of completed orders pending CLR aggregation">
+        <column xsi:type="int" name="queue_id" unsigned="true" nullable="false" identity="true"
+                comment="Queue ID"/>
+        <column xsi:type="int" name="order_id" unsigned="true" nullable="false" identity="false"
+                comment="Sales Order Entity ID"/>
+        <column xsi:type="varchar" name="customer_email" nullable="false" length="255"
+                comment="Customer Email (normalised to lowercase)"/>
+        <column xsi:type="decimal" name="base_grand_total" scale="4" precision="20" unsigned="false"
+                nullable="false" default="0" comment="Order Grand Total in Base Currency"/>
+        <column xsi:type="decimal" name="base_to_global_rate" scale="6" precision="20" unsigned="false"
+                nullable="false" default="1" comment="Base-to-Global Exchange Rate at Time of Order"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false"
+                default="CURRENT_TIMESTAMP" comment="Queued At"/>
+        <column xsi:type="smallint" name="retry_count" unsigned="true" nullable="false"
+                default="0" comment="Number of failed processing attempts"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="queue_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="CLR_ORDER_COMPLETE_QUEUE_ORDER_ID">
+            <column name="order_id"/>
+        </constraint>
+        <index referenceId="CLR_ORDER_COMPLETE_QUEUE_CUSTOMER_EMAIL" indexType="btree">
+            <column name="customer_email"/>
+        </index>
+        <index referenceId="CLR_ORDER_COMPLETE_QUEUE_RETRY_COUNT_QUEUE_ID" indexType="btree">
+            <column name="retry_count"/>
+            <column name="queue_id"/>
+        </index>
+        <constraint xsi:type="foreign"
+                    referenceId="CLR_ORDER_COMPLETE_QUEUE_ORDER_ID_SALES_ORDER_ENTITY_ID"
+                    table="clr_order_complete_queue"
+                    column="order_id"
+                    referenceTable="sales_order"
+                    referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+    </table>
+    <table name="clr_customer_lifetime_revenue" resource="sales" engine="innodb"
+           comment="Pre-aggregated Customer Lifetime Revenue per email">
+        <column xsi:type="int" name="clr_id" unsigned="true" nullable="false" identity="true"
+                comment="CLR Record ID"/>
+        <column xsi:type="varchar" name="customer_email" nullable="false" length="255"
+                comment="Customer Email (normalised to lowercase)"/>
+        <column xsi:type="decimal" name="lifetime_revenue" scale="4" precision="20" unsigned="false"
+                nullable="false" default="0" comment="Total Completed Order Value in Global Currency"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false"
+                default="CURRENT_TIMESTAMP" comment="Last Updated"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="clr_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="CLR_CUSTOMER_LIFETIME_REVENUE_CUSTOMER_EMAIL">
+            <column name="customer_email"/>
+        </constraint>
+    </table>
+</schema>
